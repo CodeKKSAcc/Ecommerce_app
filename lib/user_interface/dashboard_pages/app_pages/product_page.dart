@@ -1,5 +1,7 @@
 import 'dart:math';
 
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 
 class ProductPage extends StatefulWidget {
@@ -10,6 +12,13 @@ class ProductPage extends StatefulWidget {
 class _ProductPageState extends State<ProductPage> {
   int selectedOne = 1;
   String productData = "";
+
+  List<String> productImages = [
+    "https://shop.timexindia.com/cdn/shop/files/TWEG26704_1.jpg?v=1748513330",
+    "https://m.media-amazon.com/images/I/81ZQ1YJ1xQL._AC_UY1000_.jpg",
+    "https://shop.timexindia.com/cdn/shop/files/02680_WB23_September_flatlay_background_imagery_TW2W10400_mobile_3e2ec263-8e8f-4f42-a653-a9f268ac4e17.jpg?v=1759837905",
+    "https://www.watches.com/cdn/shop/files/timex-marlin-chronograph-tachymeter-40mm-blue-tw2w99000vq-188772_1080x.jpg?v=1749278049",
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -84,24 +93,50 @@ class _ProductPageState extends State<ProductPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product image
-                    Container(
-                      height: 240,
-                      width: double.infinity,
-                      margin: EdgeInsets.only(bottom: 21, top: 12),
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(21),
+                    CarouselSlider.builder(
+                      itemCount: productImages.length,
+                      itemBuilder: (context, index, _) {
+                        return Container(
+                          height: 270,
+                          margin: EdgeInsets.only(right: 15, top: 25, bottom: 21),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: NetworkImage(productImages[index]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Align(
+                                alignment: Alignment(0, 1),
+                                child: DotsIndicator(
+                                  dotsCount: productImages.length,
+                                  decorator: DotsDecorator(size: Size(24, 12), activeSize: Size(24, 12), shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(8)), color: Colors.green),
+                                  position: index.toDouble(),
+                                  animate: true,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        viewportFraction: 0.87,
+                        autoPlayCurve: Curves.fastOutSlowIn,
                       ),
                     ),
                     // Wireless Headphone
                     Text(
-                      "Wireless Headphone",
+                      "Timex Marlin Watch",
                       style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 12),
                     // Price
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -351,7 +386,8 @@ class _ProductPageState extends State<ProductPage> {
             Align(
               alignment: Alignment(0, 0.96),
               child: Container(
-                height: 90,
+                padding: EdgeInsets.all(9),
+                height: 84,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: Color(0xff000000),
@@ -365,8 +401,7 @@ class _ProductPageState extends State<ProductPage> {
                       width: 135,
                       padding: EdgeInsets.symmetric(horizontal: 6),
                       margin: EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 15,
+                        horizontal: 9,
                       ),
                       decoration: BoxDecoration(
                         border: Border.all(width: 1.5, color: Colors.white),
@@ -389,7 +424,7 @@ class _ProductPageState extends State<ProductPage> {
                       alignment: Alignment(0, 0),
                       height: 60,
                       width: 210,
-                      margin: EdgeInsets.all(9),
+                      /*margin: EdgeInsets.all(9),*/
                       decoration: BoxDecoration(
                         color: Colors.deepOrangeAccent,
                         borderRadius: BorderRadius.circular(30),

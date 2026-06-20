@@ -28,46 +28,81 @@ class _DashboardPageState extends State<DashboardPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[selectedPage],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: selectedPage,
-        onTap: (value) {
-          if (value == 0) {
-            Navigator.pushNamed(context, AppRoutes.product_page);
-          }
-          else if (value == 1) {
-            Navigator.pushNamed(context, AppRoutes.wish_list_page);
-          } else if (value == 3) {
-            Navigator.pushNamed(context, AppRoutes.cart_page);
-          } else {
-            selectedPage = value;
-          }
-          setState(() {});
-        },
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.blueGrey,
-        type: BottomNavigationBarType.fixed,
-        iconSize: 33,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard_customize_outlined),
-            label: "",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ""),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home)
-            /*FloatingActionButton(
-              onPressed: () {},
-              shape: CircleBorder(),
-              backgroundColor: Colors.deepOrangeAccent,
-              foregroundColor: Colors.white,
-              child: Icon(Icons.home),
-            )*/,
-            label: "",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ""),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ""),
-        ],
+      /*backgroundColor: Colors.blue,*/
+      bottomNavigationBar: BottomAppBar(
+        shape: CircularNotchedRectangle(),
+        notchMargin: 12,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedPage = 0;
+                });
+              },
+              icon: Icon(
+                Icons.dashboard_customize_outlined,
+                size: 27,
+                color: Colors.grey,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedPage = 1;
+                });
+              },
+              icon: Icon(
+                Icons.favorite,
+                size: 27,
+                color: Colors.grey,
+              ),
+            ),
+            SizedBox(width: 51,),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedPage = 3;
+                });
+              },
+              icon: Icon(
+                Icons.shopping_cart,
+                size: 27,
+                color: Colors.grey,
+              ),
+            ),
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  selectedPage = 4;
+                });
+              },
+              icon: Icon(
+                Icons.person,
+                size: 27,
+                color: Colors.grey,
+              ),
+            ),
+          ],
+        ),
       ),
+      floatingActionButton: SizedBox(
+        height: 72,
+        width: 72,
+        child: FloatingActionButton(
+          onPressed: () {
+            setState(() {
+              selectedPage = 2;
+            });
+          },
+          shape: CircleBorder(),
+          backgroundColor: Colors.deepOrangeAccent,
+          foregroundColor: Colors.white,
+          child: Icon(Icons.home, size: 36,),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
     );
   }
 }
