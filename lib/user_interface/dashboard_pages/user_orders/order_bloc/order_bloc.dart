@@ -29,7 +29,7 @@ class OrderBloc extends Bloc<OrderEvent, OrderState>{
           "user_id" : userId
         });
 
-        if(data["status"] || data["status"] == "status"){
+        if(data["status"]){
 
           List<OrderModel> allOrders = [];
 
@@ -48,3 +48,43 @@ class OrderBloc extends Bloc<OrderEvent, OrderState>{
     });
   }
 }
+
+/*
+class OrderBloc extends Bloc<OrderEvent, OrderState>{
+
+  ApiHelper apiHelper;
+
+  OrderBloc({required this.apiHelper}) : super(InitialOrderState()){
+
+    on<FetchAllOrderEvent>((event, emit) async{
+
+      emit(LoadingOrderState());
+
+      try {
+
+        SharedPreferences myPref = await SharedPreferences.getInstance();
+        int userId = myPref.getInt(AppUserConstants.user_id) ?? 0;
+
+        dynamic data = await apiHelper.postAPI(url: AppUrl.getOrderUrl, myBodyParameters: {
+          "user_id" : userId
+        });
+
+        if(data["status"] || data["status"] == "status"){
+
+          List<OrderModel> allOrders = [];
+
+          for(Map<String, dynamic> orders in data["orders"]){
+            allOrders.add(OrderModel.fromJson(orders));
+          }
+
+          emit(LoadedOrderState(allOrders: allOrders));
+        } else {
+          emit(ErrorOrderState(errorMsg: data["message"]));
+        }
+
+      } catch (e) {
+        emit(ErrorOrderState(errorMsg: e.toString()));
+      }
+    });
+  }
+}*/

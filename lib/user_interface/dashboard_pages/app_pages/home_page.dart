@@ -350,7 +350,7 @@ class _HomePageState extends State<HomePage> {
                                                 Icons.favorite,
                                                 color: isLiked
                                                     ? Colors.red
-                                                    : Colors.white,
+                                                    : Colors.black54,
                                               ),
                                             ),
                                           )
