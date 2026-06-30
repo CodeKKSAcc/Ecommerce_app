@@ -40,23 +40,23 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(36)),
-              shadowColor: Colors.deepOrangeAccent,
-              elevation: 21,
-              child: Icon(Icons.shopping_cart, size: 72),
-            ),
-            SizedBox(width: 15),
-            Text(
-              "Ecommerce App",
-              style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: Colors.deepOrange.shade300),
-            ),
-          ],
-        ),
-      ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.circular(36)),
+                shadowColor: Colors.deepOrangeAccent,
+                elevation: 21,
+                child: Icon(Icons.shopping_cart, size: 72),
+              ),
+              SizedBox(width: 15),
+              Text(
+                "Ecommerce App",
+                style: TextStyle(fontSize: 36, fontWeight: FontWeight.w900, color: Colors.deepOrange.shade300),
+              ),
+            ],
+          ),
+        )
     );
   }
 }

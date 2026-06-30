@@ -1,10 +1,21 @@
 import 'package:ecommerce_app/app_utilities/app_constants/app_routes.dart';
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page.dart';
+import 'package:ecommerce_app/data/models/user_profile_data_model.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page/cart_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/product_category/category_display_page.dart';
 import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/home_page.dart';
 import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/product_page.dart';
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/profile_page.dart';
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/wish_list_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/user_profile/profile_bloc/profile_state.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/user_profile/profile_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/wishlist_products/wish_list_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/products_bloc/product_bloc.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/products_bloc/product_event.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../app_utilities/app_constants/app_constants.dart';
+import 'app_pages/user_profile/profile_bloc/profile_bloc.dart';
+import 'app_pages/user_profile/profile_bloc/profile_event.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -14,9 +25,26 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    initialProfileFetch();
+    context.read<ProductBloc>().add(FetchAllProductEvent());
+  }
+
+  Future<void> initialProfileFetch() async {
+    context.read<ProfileBloc>().add(FetchAllProfileDataEvent());
+
+      SharedPreferences myUid = await SharedPreferences.getInstance();
+      myUid.setInt(AppUserConstants.user_id, 242);
+
+    setState(() {});
+  }
+
   List<Widget> pages = [
-    ProductPage(),
-    WishlListPage(),
+    CategoryDisplayPage(),
+    WishListPage(),
     HomePage(),
     CartPage(),
     ProfilePage(),
@@ -29,7 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
     return Scaffold(
       body: pages[selectedPage],
       /*backgroundColor: Colors.blue,*/
-      bottomNavigationBar: BottomAppBar(
+      bottomNavigationBar: selectedPage == 3? null : BottomAppBar(
         shape: CircularNotchedRectangle(),
         notchMargin: 12,
         child: Row(
@@ -62,8 +90,10 @@ class _DashboardPageState extends State<DashboardPage> {
             SizedBox(width: 51,),
             IconButton(
               onPressed: () {
+                Navigator
+                .pushNamed(context, AppRoutes.cart_page);
                 setState(() {
-                  selectedPage = 3;
+
                 });
               },
               icon: Icon(
@@ -73,7 +103,10 @@ class _DashboardPageState extends State<DashboardPage> {
               ),
             ),
             IconButton(
-              onPressed: () {
+              onPressed: () async{
+                /*SharedPreferences myPref = await SharedPreferences.getInstance();
+                myPref.setInt(AppUserConstants.user_id, int.parse(userdata.id));
+                print(int.parse(userdata.id));*/
                 setState(() {
                   selectedPage = 4;
                 });
@@ -102,7 +135,7 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Icon(Icons.home, size: 36,),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: selectedPage == 3? null :  FloatingActionButtonLocation.centerDocked,
     );
   }
 }

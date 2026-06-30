@@ -1,8 +1,8 @@
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page/cart_page.dart';
 import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/home_page.dart';
 import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/product_page.dart';
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/profile_page.dart';
-import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/wish_list_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/user_profile/profile_page.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/wishlist_products/wish_list_page.dart';
 import 'package:ecommerce_app/user_interface/dashboard_pages/dashboard_page.dart';
 import 'package:ecommerce_app/user_interface/on_boarding/login/login_page.dart';
 import 'package:ecommerce_app/user_interface/on_boarding/signup/signup_page.dart';
@@ -26,8 +26,8 @@ class AppRoutes {
     signup_page : (context) => SignupPage(),
     dashboard_page: (context) => DashboardPage(),
     home_page: (context) => HomePage(),
-    product_page: (context) => ProductPage(),
-    wish_list_page: (context) => WishlListPage(),
+    product_page: (context) => ProductPage(price: "0", imageLink: "https://shop.timexindia.com/cdn/shop/files/TWEG26704_1.jpg?v=1748513330", name: "", product_id: 1,),
+    wish_list_page: (context) => WishListPage(),
     cart_page: (context) => CartPage(),
     profile_page: (context) => ProfilePage(),
   };

@@ -8,4 +8,6 @@ class AppUserConstants {
   static const String user_password = "password";
 
   static const String user_token  = "tokan";
+  static const String user_id  = "uId";
+  static const String cart_id  = "cart_id";
 }

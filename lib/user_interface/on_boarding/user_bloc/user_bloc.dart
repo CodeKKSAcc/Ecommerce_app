@@ -21,7 +21,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
             AppUserConstants.user_mob_no: event.mobile_number,
             AppUserConstants.user_email: event.email,
             AppUserConstants.user_password: event.password,
-          },
+          }, isAuth: true
         );
 
         if (data["status"]) {
@@ -43,7 +43,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           myBodyParameters: {
             AppUserConstants.user_email: event.email,
             AppUserConstants.user_password: event.password,
-          },
+          }, isAuth: true
         );
 
         if (data["status"]) {

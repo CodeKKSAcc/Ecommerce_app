@@ -2,16 +2,41 @@ import 'dart:math';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page/cart_bloc/cart_bloc.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page/cart_bloc/cart_event.dart';
+import 'package:ecommerce_app/user_interface/dashboard_pages/app_pages/cart_page/cart_bloc/cart_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProductPage extends StatefulWidget {
   @override
   State<ProductPage> createState() => _ProductPageState();
+
+  String imageLink;
+  String price;
+  String name;
+  int product_id;
+
+  ProductPage({
+    required this.imageLink,
+    required this.price,
+    required this.name,
+    required this.product_id,
+  });
 }
 
 class _ProductPageState extends State<ProductPage> {
   int selectedOne = 1;
   String productData = "";
+
+  int productQuantity = 1;
+
+  /*List<String> productImages = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyHGo35XcQVuhcaefXN_BOxN6gn2ZNNXA8d8Y4HMIDYQ&s=10",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2zc-VqX8j_vyfoBXUTah3wAaev8PbcE3SmttuGkuodACJgjuidMbWABU&s=10",
+    "https://cdn.mos.cms.futurecdn.net/v2/t:0,l:1401,cw:2102,ch:2102,q:80,w:2102/rxQZyJdz5M2LXjqzxmpip7.jpg",
+    "https://quicktech.in/cdn/shop/files/13-inch_MacBook_Air_M5_side_view_showing_MagSafe_Thunderbolt_4_and_headphone_jack_ports.jpg?v=1779729419&width=1946",
+  ];*/
 
   List<String> productImages = [
     "https://shop.timexindia.com/cdn/shop/files/TWEG26704_1.jpg?v=1748513330",
@@ -22,6 +47,7 @@ class _ProductPageState extends State<ProductPage> {
 
   @override
   Widget build(BuildContext context) {
+
     if (selectedOne == 1) {
       productData =
           "Our Bluetooth earbuds bring together style, comfort, and cutting-edge technology "
@@ -93,7 +119,7 @@ class _ProductPageState extends State<ProductPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product image
-                    CarouselSlider.builder(
+                    /*CarouselSlider.builder(
                       itemCount: productImages.length,
                       itemBuilder: (context, index, _) {
                         return Container(
@@ -128,10 +154,21 @@ class _ProductPageState extends State<ProductPage> {
                         viewportFraction: 0.87,
                         autoPlayCurve: Curves.fastOutSlowIn,
                       ),
+                    ),*/
+                    Container(
+                      height: 270,
+                      margin: EdgeInsets.only(right: 15, top: 25, bottom: 21),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        image: DecorationImage(
+                          image: NetworkImage(widget.imageLink),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     // Wireless Headphone
                     Text(
-                      "Timex Marlin Watch",
+                      widget.name,
                       style: TextStyle(
                         fontSize: 33,
                         fontWeight: FontWeight.bold,
@@ -146,7 +183,7 @@ class _ProductPageState extends State<ProductPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "\$900.00",
+                              "\$${widget.price}",
                               style: TextStyle(
                                 fontSize: 27,
                                 fontWeight: FontWeight.bold,
@@ -385,63 +422,132 @@ class _ProductPageState extends State<ProductPage> {
             ),
             Align(
               alignment: Alignment(0, 0.96),
-              child: Container(
-                padding: EdgeInsets.all(9),
+              child: SizedBox(
                 height: 84,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xff000000),
-                  border: Border.all(),
-                  borderRadius: BorderRadius.circular(39),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 45,
-                      width: 135,
-                      padding: EdgeInsets.symmetric(horizontal: 6),
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 9,
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.5, color: Colors.white),
-                        borderRadius: BorderRadius.circular(27),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.remove, color: Colors.white),
-                          Text(
-                            "1",
-                            style: TextStyle(fontSize: 18, color: Colors.white),
-                          ),
-                          Icon(Icons.add, color: Colors.white),
-                        ],
-                      ),
-                    ),
-                    Spacer(),
-                    Container(
-                      alignment: Alignment(0, 0),
-                      height: 60,
-                      width: 210,
-                      /*margin: EdgeInsets.all(9),*/
-                      decoration: BoxDecoration(
-                        color: Colors.deepOrangeAccent,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          "Add to Cart",
-                          style: TextStyle(
-                            fontSize: 21,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
+                child: BlocConsumer<CartBloc, CartState>(
+                  listener: (context, state) {
+
+                    if (state is CartSuccessState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.successMsg),
+                          backgroundColor: Colors.green,
                         ),
+                      );
+                    }
+
+                    if (state is CartFailureState) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMsg),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return Container(
+                      padding: EdgeInsets.all(9),
+                      height: 84,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Color(0xff000000),
+                        border: Border.all(),
+                        borderRadius: BorderRadius.circular(39),
                       ),
-                    ),
-                  ],
+                      child: StatefulBuilder(
+                        builder: (context, S) {
+                          return Row(
+                            children: [
+                              Container(
+                                height: 45,
+                                width: 135,
+                                padding: EdgeInsets.symmetric(horizontal: 6),
+                                margin: EdgeInsets.symmetric(horizontal: 9),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1.5,
+                                    color: Colors.white,
+                                  ),
+                                  borderRadius: BorderRadius.circular(27),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        if(productQuantity > 1){
+                                          productQuantity--;
+                                        }
+                                        S((){
+
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.remove,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      "$productQuantity",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        productQuantity++;
+                                        S((){
+
+                                        });
+                                      },
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap: () async {
+                                  // Adding item's to the Cart
+                                  context.read<CartBloc>().add(
+                                    AddToCartEvent(
+                                      product_id: widget.product_id,
+                                      quantity: productQuantity,
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  alignment: Alignment(0, 0),
+                                  height: 60,
+                                  width: 210,
+                                  /*margin: EdgeInsets.all(9),*/
+                                  decoration: BoxDecoration(
+                                    color: Colors.deepOrangeAccent,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    "Add to Cart",
+                                    style: TextStyle(
+                                      fontSize: 21,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
